@@ -1,44 +1,30 @@
-// Portfolio.jsx
+import { useState } from "react";
+
 const projects = [
-  {
-    img: "ruta/a/imagen1.jpg",
-    title: "Tienda ABC",
-    desc: "E-commerce sencillo, rápido y adaptable a móviles.",
-    link: "#",
-  },
-  {
-    img: "ruta/a/imagen2.jpg",
-    title: "Consultora XYZ",
-    desc: "Sitio institucional para captar clientes profesionales.",
-    link: "#",
-  },
-  {
-    img: "ruta/a/imagen3.jpg",
-    title: "Estudio Creativo",
-    desc: "Portfolio visual para creativos independientes.",
-    link: "#",
-  },
-  {
-    img: "ruta/a/imagen4.jpg",
-    title: "Café Urbano",
-    desc: "Página para cafetería con menú digital.",
-    link: "#",
-  },
-  {
-    img: "ruta/a/imagen5.jpg",
-    title: "Eventos Live",
-    desc: "Sitio para eventos y reservas online.",
-    link: "#",
-  },
-  {
-    img: "ruta/a/imagen6.jpg",
-    title: "Academia Pro",
-    desc: "Plataforma educativa moderna y segura.",
-    link: "#",
+{
+    title: "Carniceria",
+    videoDesktop: "/videos/carniceria-desktop.mp4", // Coloca tu video en /public/videos/
+    desc: "Panel financiero para ",
+    link: "https://tiendaabc.com"
   },
 ];
 
 export default function Portfolio() {
+  const [open, setOpen] = useState(false);
+  const [modalProject, setModalProject] = useState(null);
+
+  const openModal = (project) => {
+    setModalProject(project);
+    setOpen(true);
+    // Opcional: Bloquear scroll background cuando modal está abierto
+    document.body.style.overflow = "hidden";
+  };
+  const closeModal = () => {
+    setOpen(false);
+    setModalProject(null);
+    document.body.style.overflow = "";
+  };
+
   return (
     <section id="portfolio" className="w-full bg-[#181A20] py-20">
       <div className="max-w-6xl mx-auto px-4">
@@ -55,19 +41,31 @@ export default function Portfolio() {
               className="bg-[#23262F] rounded-2xl p-4 flex flex-col items-center shadow-md transition hover:shadow-blue-400/40 hover:-translate-y-2 duration-300 group animate-fade-in"
               style={{ animationDelay: `${i * 120}ms` }}
             >
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full overflow-hidden rounded-xl"
+              <button
+                type="button"
+                onClick={() => openModal(project)}
+                className="block w-full overflow-hidden rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                aria-label={`Ampliar ${project.title}`}
               >
-                <img
-                  src={project.img}
-                  alt={project.title}
-                  className="w-full h-48 object-cover rounded-xl shadow transition duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-blue-400/30"
-                  loading="lazy"
-                />
-              </a>
+                {project.videoDesktop ? (
+                  <video
+                    src={project.videoDesktop}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-48 object-cover rounded-xl shadow transition duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-blue-400/30"
+                    poster={project.imgDesktop}
+                  />
+                ) : project.imgDesktop ? (
+                  <img
+                    src={project.imgDesktop}
+                    alt={project.title}
+                    className="w-full h-48 object-cover rounded-xl shadow"
+                    loading="lazy"
+                  />
+                ) : null}
+              </button>
               <h3 className="text-lg font-semibold text-white mt-4 mb-1 text-center group-hover:text-blue-400 transition">
                 {project.title}
               </h3>
@@ -75,6 +73,7 @@ export default function Portfolio() {
             </div>
           ))}
         </div>
+
         {/* Botón para ver más */}
         <div className="flex justify-center mt-12">
           <a
@@ -87,6 +86,62 @@ export default function Portfolio() {
           </a>
         </div>
       </div>
+
+      {/* MODAL */}
+      {open && modalProject && (
+        <div
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-[1000] animate-fade-in"
+          onClick={closeModal}
+        >
+          <div
+            className="relative bg-[#22262f] rounded-2xl p-6 shadow-xl max-w-2xl w-[90vw] mx-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={closeModal}
+              className="absolute top-3 right-3 text-white text-2xl hover:text-blue-400 transition"
+              aria-label="Cerrar"
+            >
+              ×
+            </button>
+            <h3 className="text-2xl font-bold text-white mb-3 text-center">{modalProject.title}</h3>
+            {/* VIDEO O IMAGEN */}
+            {modalProject.videoDesktop ? (
+              <video
+                src={modalProject.videoDesktop}
+                controls
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-[380px] max-h-[60vw] object-contain rounded-xl mb-4 bg-black"
+                poster={modalProject.imgDesktop}
+              />
+            ) : modalProject.imgDesktop ? (
+              <img
+                src={modalProject.imgDesktop}
+                alt={modalProject.title}
+                className="w-full rounded-xl mb-4"
+              />
+            ) : null}
+            {modalProject.desc && (
+              <p className="text-gray-300 text-center">{modalProject.desc}</p>
+            )}
+            {modalProject.link && (
+              <div className="mt-4 text-center">
+                <a
+                  href={modalProject.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg px-6 py-2 transition"
+                >
+                  Ver sitio en vivo
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
