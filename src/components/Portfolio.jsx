@@ -3,9 +3,22 @@ import { useState } from "react";
 const projects = [
 {
     title: "Carniceria",
-    videoDesktop: "/videos/carniceria-desktop.mp4", // Coloca tu video en /public/videos/
-    desc: "Panel financiero para ",
+    videoDesktop: "/public/videos/carniceria computadora.mp4", // Coloca tu video en /public/videos/
+        videoMobile: "/public/videos/carniceria celular.mp4",   // Opcional
+    desc: "Panel financiero para una carniceria ",
     link: "https://tiendaabc.com"
+  },
+  {
+    title: "Clincica Medica",
+    videoDesktop: "/public/videos/clinica.mp4", // Coloca tu video en /public/videos/
+    desc: "Clinica medica para solicitar turnos y ver los especialistas disponibles",
+    link: "https://nosotroswebclinica.netlify.app/#"
+  },
+  {
+    title: "Tienda de Ropa",
+    videoDesktop: "/public/videos/zapatillas computadora.mp4", // Coloca tu video en /public/videos/
+    desc: "Tienda de Ropa NosotrosWeb",
+    link: "https://nosotroswebecomerce.netlify.app/"
   },
 ];
 
@@ -82,7 +95,7 @@ export default function Portfolio() {
             rel="noopener noreferrer"
             className="inline-block bg-blue-500 hover:bg-blue-600 text-white text-lg font-bold rounded-xl px-8 py-3 shadow-lg transition duration-300"
           >
-            Ver más trabajos
+            Contáctanos
           </a>
         </div>
       </div>
@@ -135,7 +148,7 @@ export default function Portfolio() {
                   rel="noopener noreferrer"
                   className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg px-6 py-2 transition"
                 >
-                  Ver sitio en vivo
+                  Ver Demo
                 </a>
               </div>
             )}
