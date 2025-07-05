@@ -3,20 +3,20 @@ import { useState } from "react";
 const projects = [
 {
     title: "Carniceria",
-    videoDesktop: "/public/videos/carniceria computadora.mp4", // Coloca tu video en /public/videos/
-        videoMobile: "/public/videos/carniceria celular.mp4",   // Opcional
+    videoDesktop: "videos/carniceria computadora.mp4", // Coloca tu video en /public/videos/
+        videoMobile: "videos/carniceria celular.mp4",   // Opcional
     desc: "Panel financiero para una carniceria ",
     link: "https://tiendaabc.com"
   },
   {
     title: "Clincica Medica",
-    videoDesktop: "/public/videos/clinica.mp4", // Coloca tu video en /public/videos/
+    videoDesktop: "videos/clinica.mp4", // Coloca tu video en /public/videos/
     desc: "Clinica medica para solicitar turnos y ver los especialistas disponibles",
     link: "https://nosotroswebclinica.netlify.app/#"
   },
   {
     title: "Tienda de Ropa",
-    videoDesktop: "/public/videos/zapatillas computadora.mp4", // Coloca tu video en /public/videos/
+    videoDesktop: "videos/zapatillas computadora.mp4", // Coloca tu video en /public/videos/
     desc: "Tienda de Ropa NosotrosWeb",
     link: "https://nosotroswebecomerce.netlify.app/"
   },
