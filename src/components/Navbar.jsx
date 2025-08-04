@@ -12,19 +12,23 @@ export default function Navbar() {
 
   // Detectar la sección visible con IntersectionObserver
   useEffect(() => {
-    const handler = () => {
-      const scrollPos = window.scrollY;
-      let current = "inicio";
-      for (let section of SECTIONS) {
-        const el = document.getElementById(section.id);
-        if (el && el.offsetTop - 120 <= scrollPos) {
-          current = section.id;
-        }
-      }
-      setActive(current);
-    };
-    window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActive(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    SECTIONS.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
