@@ -1,22 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const projects = [
 {
     title: "Carniceria",
     videoDesktop: "videos/carniceria computadora.mp4", // Coloca tu video en /public/videos/
-        videoMobile: "videos/carniceria celular.mp4",   // Opcional
+    videoMobile: "videos/carniceria celular.mp4", // Opcional
+    poster: "videos/vite.svg.png",
     desc: "Panel financiero para una carniceria ",
     link: "https://tiendaabc.com"
   },
   {
     title: "Clincica Medica",
     videoDesktop: "videos/clinica.mp4", // Coloca tu video en /public/videos/
+    poster: "videos/vite.svg.png",
     desc: "Clinica medica para solicitar turnos y ver los especialistas disponibles",
     link: "https://nosotroswebclinica.netlify.app/#"
   },
   {
     title: "Tienda de Ropa",
     videoDesktop: "videos/zapatillas computadora.mp4", // Coloca tu video en /public/videos/
+    poster: "videos/vite.svg.png",
     desc: "Tienda de Ropa NosotrosWeb",
     link: "https://nosotroswebecomerce.netlify.app/"
   },
@@ -25,6 +28,34 @@ const projects = [
 export default function Portfolio() {
   const [open, setOpen] = useState(false);
   const [modalProject, setModalProject] = useState(null);
+  const videoRefs = useRef([]);
+
+  useEffect(() => {
+    const videos = videoRefs.current;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            video.play();
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    videos.forEach((video) => {
+      if (video) observer.observe(video);
+    });
+
+    return () => {
+      videos.forEach((video) => {
+        if (video) observer.unobserve(video);
+      });
+    };
+  }, []);
 
   const openModal = (project) => {
     setModalProject(project);
@@ -62,13 +93,17 @@ export default function Portfolio() {
               >
                 {project.videoDesktop ? (
                   <video
+                    ref={(el) => {
+                      videoRefs.current[i] = el;
+                    }}
                     src={project.videoDesktop}
-                    autoPlay
                     muted
                     loop
                     playsInline
+                    preload="metadata"
+                    controls
                     className="w-full h-48 object-cover rounded-xl shadow transition duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-blue-400/30"
-                    poster={project.imgDesktop}
+                    poster={project.poster}
                   />
                 ) : project.imgDesktop ? (
                   <img
@@ -127,8 +162,9 @@ export default function Portfolio() {
                 muted
                 loop
                 playsInline
+                preload="metadata"
                 className="w-full h-[380px] max-h-[60vw] object-contain rounded-xl mb-4 bg-black"
-                poster={modalProject.imgDesktop}
+                poster={modalProject.poster}
               />
             ) : modalProject.imgDesktop ? (
               <img
